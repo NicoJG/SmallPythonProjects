@@ -1,6 +1,7 @@
 """This is the main script of the pendulum 2D animation."""
 
 from matplotlib.axes import Axes
+from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import matplotlib.animation as anim
 import numpy as np
@@ -17,28 +18,27 @@ visuals['approx'] = {'color':'b', 'label':'small angle approx.'}
 visuals['exact'] = {'color':'r', 'label':'numerical ode integration'}
 velocity_scl = 0.5
 
-# init figure and axes
-fig, axs = plt.subplots(2,2)
-ax_main = axs[0,0]
+# init figure
+fig = plt.figure()
+
+# init axes / subplots
+ax_main = plt.subplot(221, box_aspect=1)
 ax_main.set_xlim(-c.L*1.5,c.L*1.5)
 ax_main.set_ylim(-c.L*1.5,c.L*1.5)
-ax_main.set_aspect('equal')
 ax_main.set_xlabel('x')
 ax_main.set_ylabel('y')
 
-ax_y = axs[0,1]
-ax_y.set_ylim(-c.L*1.5,c.L*1.5)
+ax_y = plt.subplot(222, sharey=ax_main, box_aspect=1)
 ax_y.set_xlim(0,c.t_max)
 ax_y.set_xlabel('t / s')
 ax_y.set_ylabel('y')
 
-ax_x = axs[1,0]
-ax_x.set_xlim(-c.L*1.5,c.L*1.5)
+ax_x =  plt.subplot(223, sharex=ax_main, box_aspect=1)
 ax_x.set_ylim(c.t_max,0)
 ax_x.set_ylabel('t / s')
 ax_x.set_xlabel('x')
 
-ax_phasespace = axs[1,1]
+ax_phasespace =  plt.subplot(224, box_aspect=1)
 phi_min = np.min([np.min(data[method]['phi']) for method in data])
 phi_max = np.max([np.max(data[method]['phi']) for method in data])
 phi_dot_min = np.min([np.min(data[method]['phi_dot']) for method in data])
