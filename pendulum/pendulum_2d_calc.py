@@ -68,8 +68,8 @@ def gen_data_approx() -> dict:
     r_dot_approx = f.r_dot(phi_approx, phi_dot_approx)
     r_double_dot_approx = f.r_double_dot(phi_approx, phi_dot_approx, f.phi_double_dot(phi_approx))
 
-    data_approx = {"phi":phi_approx, "r":r_approx, "r_dot":r_dot_approx, "r_double_dot":r_double_dot_approx}
-
+    data_approx = {"phi":phi_approx, "r":r_approx, "r_dot":r_dot_approx, "r_double_dot":r_double_dot_approx,
+                    "color":"b", "label":"small angle approx."}
     return data_approx
 
 def gen_data_exact() -> dict:
@@ -93,7 +93,8 @@ def gen_data_exact() -> dict:
     r_dot_exact = f.r_dot(phi_exact, phi_dot_exact)
     r_double_dot_exact = f.r_double_dot(phi_exact, phi_dot_exact, f.phi_double_dot(phi_exact))
 
-    data_exact = {"phi":phi_exact, "r":r_exact, "r_dot":r_dot_exact, "r_double_dot":r_double_dot_exact}
+    data_exact = {"phi":phi_exact, "r":r_exact, "r_dot":r_dot_exact, "r_double_dot":r_double_dot_exact, 
+                    "color":"r", "label":"numerical ode integration"}
     return data_exact
 
 def gen_data() -> dict:
