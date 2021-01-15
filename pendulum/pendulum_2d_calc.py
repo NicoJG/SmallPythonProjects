@@ -10,11 +10,12 @@ class constants:
     fps = 60 # frames per second
     t_max = 10 # end time of the simulation in s
     dt = 1/fps # seconds per frame
+    t = np.arange(start=0, step=dt, stop=t_max)
     # physical constants
     r_fix = np.array([0,0]) # where the pendulum is attached to in m
-    L = 5 # length of the pendulum in m
-    phi_0 = np.pi/6 # starting value of phi in rad
-    phi_dot_0 = 1 # starting angular velocity in rad/s
+    L = 1 # length of the pendulum in m
+    phi_0 = 0.8 # starting value of phi in rad
+    phi_dot_0 = 0 # starting angular velocity in rad/s
     g = 9.81 # gravitational acceleration in m/s^2
     omega = np.sqrt(g/L) # angular frequency in 1/s
 
@@ -60,23 +61,20 @@ def gen_data_approx() -> dict:
     """Generates all the data of the small angle approximation"""
     c = constants
     f = mathematical_functions
-    t = np.arange(start=0, step=c.dt, stop=c.t_max)
 
-    phi_approx = f.phi(t)
-    phi_dot_approx = f.phi_dot(t)
+    phi_approx = f.phi(c.t)
+    phi_dot_approx = f.phi_dot(c.t)
     r_approx = f.r(phi_approx)
     r_dot_approx = f.r_dot(phi_approx, phi_dot_approx)
     r_double_dot_approx = f.r_double_dot(phi_approx, phi_dot_approx, f.phi_double_dot(phi_approx))
 
-    data_approx = {"phi":phi_approx, "r":r_approx, "r_dot":r_dot_approx, "r_double_dot":r_double_dot_approx,
-                    "color":"b", "label":"small angle approx."}
+    data_approx = {"phi":phi_approx,"phi_dot":phi_dot_approx, "r":r_approx, "r_dot":r_dot_approx, "r_double_dot":r_double_dot_approx}
     return data_approx
 
 def gen_data_exact() -> dict:
     """Generates all the data of the numerical integration of the exact differential equation."""
     c = constants
     f = mathematical_functions
-    t = np.arange(start=0, step=c.dt, stop=c.t_max)
 
     def phi_ode(y, t):
         """function for the numerical integration through odeint"""
@@ -85,7 +83,7 @@ def gen_data_exact() -> dict:
         return dydt
 
     y_0 = [c.phi_0, c.phi_dot_0]
-    y = odeint(phi_ode, y_0, t)
+    y = odeint(phi_ode, y_0, c.t)
     phi_exact = y[:,0]
     phi_dot_exact = y[:,1]
 
@@ -93,8 +91,7 @@ def gen_data_exact() -> dict:
     r_dot_exact = f.r_dot(phi_exact, phi_dot_exact)
     r_double_dot_exact = f.r_double_dot(phi_exact, phi_dot_exact, f.phi_double_dot(phi_exact))
 
-    data_exact = {"phi":phi_exact, "r":r_exact, "r_dot":r_dot_exact, "r_double_dot":r_double_dot_exact, 
-                    "color":"r", "label":"numerical ode integration"}
+    data_exact = {"phi":phi_exact, "phi_dot":phi_dot_exact, "r":r_exact, "r_dot":r_dot_exact, "r_double_dot":r_double_dot_exact}
     return data_exact
 
 def gen_data() -> dict:
