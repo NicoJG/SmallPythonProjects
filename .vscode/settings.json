@@ -1,3 +1,6 @@
 {
-    "python.analysis.extraPaths": ["./pendulum","./codewars"]
+    "python.analysis.extraPaths": [
+        "./pendulum",
+        "./codewars"
+    ]
 }
